@@ -1,0 +1,71 @@
+import gsap, { Power4, ScrollTrigger } from "gsap/all";
+import React, { useEffect, useRef } from "react";
+import { SiPolestar } from "react-icons/si";
+
+const PlayReel = () => {
+  const parent = useRef(null);
+  const videodiv = useRef(null);
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+    
+    const ctx = gsap.context(() => {
+      gsap.to(videodiv.current, {
+        scrollTrigger: {
+          trigger: parent.current,
+          start: "top top",
+          end: "bottom top",
+          pin: true,
+          scrub: 1,
+          refreshPriority: -1,
+          invalidateOnRefresh: true,
+        },
+        width: "105%",
+        height: "105%",
+        ease: Power4.easeInOut,
+      });
+    }, parent);
+
+    return () => {
+      ctx.revert();
+      ScrollTrigger.refresh();
+    };
+  }, []);
+  return (
+    <div
+      ref={parent}
+      className="w-full h-screen overflow-hidden relative bg-black"
+    >
+      <div
+        ref={videodiv}
+        className="w-40 aspect-video absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 overflow-hidden md:w-60 sm:w-90"
+      >
+        <img
+          className="w-full h-full object-contain absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 scale-[1.2]"
+          src="/images/Playreel.gif"
+          alt=""
+        />
+      </div>
+
+      <div className=" overlay absolute w-full h-screen  text-white flex flex-col justify-between py-20">
+        <div className="w-full flex items-center justify-center gap-3">
+          <SiPolestar className="text-2xl" />
+          <h3 className="font-medium text-sm">Work in motion</h3>
+        </div>
+        <h1 className="w-full justify-center flex gap-20 md:gap-[25rem] sm:gap-[40rem]">
+          <div className="text-6xl font-medium md:text-7xl sm:text-9xl">
+            Fashion
+          </div>
+          <div className="text-6xl font-medium md:text-7xl sm:text-9xl">
+            Brand
+          </div>
+        </h1>
+        <p className="text-center px-10 font-medium text-sm">
+          Our work is best experienced in motion.Don't forget to put on your
+          headphones.
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default PlayReel;
